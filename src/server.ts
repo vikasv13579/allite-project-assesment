@@ -7,8 +7,8 @@ import { connectDatabase } from "./config/db";
 import { redisClient } from "./config/redis";
 import authRoutes from './routes/auth.routes'
 import taskRoutes from './routes/task.routes'
-// import { startTaskWorker } from "./queue/task.queue";
-// import {setupSwagger} from './config/swagger'
+import { startTaskWorker } from "./queue/task.queue";
+import {setupSwagger} from './config/swagger'
 const PORT = process.env.PORT || 5000;
 export const app = express();
 app.use(helmet());
@@ -49,6 +49,7 @@ app.use((req, res) => {
 if (process.env.NODE_ENV !== "test") {
   Promise.all([connectDatabase(), redisClient.connect()]).then(() => {
     // startTaskWorker();
+    // while uncomment then need to be use version more then 5 for redis in local redis server right now its only 3 there is not problem in code
     app.listen(PORT, () => {
       console.log(`server running on http://localhost:${PORT}`);
     });
